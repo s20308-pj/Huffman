@@ -12,7 +12,7 @@ public class FileOperations {
 
     public String downloadText() throws IOException {
         try {
-            String patchToFile = "C:\\Users\\czapl\\Desktop\\java_studia\\Huffman\\text.txt";
+            String patchToFile = "C:\\Users\\jw4026\\Desktop\\Huffman\\text.txt";
             Scanner scanner = new Scanner(new FileInputStream(patchToFile));
             text = scanner.nextLine();
         } catch (FileNotFoundException e) {
