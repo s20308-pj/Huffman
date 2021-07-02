@@ -25,16 +25,14 @@ public class Operation {
         return leafArray;
     }
 
-    public ArrayList<Leaf> heapSort(ArrayList<Leaf> leafArray) {
+    public static ArrayList<Leaf> heapSort(ArrayList<Leaf> leafArray) {
         for (int i = leafArray.size() / 2 - 1; i >= 0; i--) {
             changeElement(leafArray, leafArray.size(), i);
-
         }
-
         return leafArray;
     }
 
-    private void changeElement(ArrayList<Leaf> leafArray, int size, int i) {
+    private static void changeElement(ArrayList<Leaf> leafArray, int size, int i) {
         int smallestElement = i;
         int leftElement = 2 * i + 1;
         int rightElement = 2 * i + 2;
@@ -61,7 +59,7 @@ public class Operation {
         }
     }
 
-    public void repairArray(ArrayList<Leaf> leafArray) {
+    public static void repairArray(ArrayList<Leaf> leafArray) {
         int last = leafArray.size()-1;
         Leaf temp1 = leafArray.get(last);
         Leaf temp2 = leafArray.get(0);
@@ -71,11 +69,26 @@ public class Operation {
         leafArray.add(0, temp1);
     }
 
+    static Leaf sortGetRemoveAddLeaf(ArrayList<Leaf> leafArray) {
+        heapSort(leafArray);
+        Leaf firstElement = leafArray.get(0);
+        leafArray.remove(0);
+        repairArray(leafArray);
+        return firstElement;
+    }
+
+    static void printLeafArray(ArrayList<Leaf> leafArray) {
+        for (Leaf leaf : leafArray) {
+            System.out.print(leaf.getVertexChar() + ":" + leaf.getVertexInt() + ", ");
+        }
+        System.out.println("");
+    }
+
     public Leaf createNewLeaf(Leaf first, Leaf second) {
         Leaf leaf = new Leaf(first.getVertexChar()+second.getVertexChar(),
                 first.getVertexInt()+second.getVertexInt());
         leaf.setLeftLeaf(first);
-        leaf.setLeftLeaf(second);
+        leaf.setRightLeaf(second);
         return leaf;
     }
 }

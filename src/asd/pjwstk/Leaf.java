@@ -6,6 +6,9 @@ public class Leaf {
     private Leaf leftLeaf = null;
     private Leaf rightLeaf = null;
 
+    public Leaf() {
+    }
+
     public Leaf(String vertexChar, int instanceOfItem) {
         this.vertexChar = vertexChar;
         this.vertexInt = instanceOfItem;
