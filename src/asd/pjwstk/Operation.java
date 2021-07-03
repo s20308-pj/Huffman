@@ -1,6 +1,8 @@
 package asd.pjwstk;
 
 import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.HashMap;
 
 public class Operation {
     public ArrayList<Leaf> prepareLeafArray(char[] arrayLetter) {
@@ -25,11 +27,10 @@ public class Operation {
         return leafArray;
     }
 
-    public static ArrayList<Leaf> heapSort(ArrayList<Leaf> leafArray) {
+    public static void heapSort(ArrayList<Leaf> leafArray) {
         for (int i = leafArray.size() / 2 - 1; i >= 0; i--) {
             changeElement(leafArray, leafArray.size(), i);
         }
-        return leafArray;
     }
 
     private static void changeElement(ArrayList<Leaf> leafArray, int size, int i) {
@@ -47,7 +48,7 @@ public class Operation {
             smallestElement = rightElement;
         }
 
-        if (smallestElement != i){
+        if (smallestElement != i) {
             Leaf temp1 = leafArray.get(i);
             Leaf temp2 = leafArray.get(smallestElement);
             leafArray.remove(i);
@@ -60,7 +61,7 @@ public class Operation {
     }
 
     public static void repairArray(ArrayList<Leaf> leafArray) {
-        int last = leafArray.size()-1;
+        int last = leafArray.size() - 1;
         Leaf temp1 = leafArray.get(last);
         Leaf temp2 = leafArray.get(0);
         leafArray.remove(last);
@@ -84,11 +85,49 @@ public class Operation {
         System.out.println("");
     }
 
+    static void addCodeToLetter(Leaf huffmanTree, String code, HashMap<String, String> codeLetter) {
+        if (huffmanTree.getLeftLeaf() == null && huffmanTree.getRightLeaf() == null) {
+            System.out.println(huffmanTree.getVertexChar() + ":" + huffmanTree.getVertexInt() + " - " + code);
+            codeLetter.put(huffmanTree.getVertexChar(), code);
+            return;
+        }
+        if (huffmanTree.getLeftLeaf() != null) {
+            addCodeToLetter(huffmanTree.getLeftLeaf(), code + "0", codeLetter);
+        }
+        if (huffmanTree.getRightLeaf() != null) {
+            addCodeToLetter(huffmanTree.getRightLeaf(), code + "1", codeLetter);
+        }
+    }
+
     public Leaf createNewLeaf(Leaf first, Leaf second) {
-        Leaf leaf = new Leaf(first.getVertexChar()+second.getVertexChar(),
-                first.getVertexInt()+second.getVertexInt());
+        Leaf leaf = new Leaf(first.getVertexChar() + second.getVertexChar(),
+                first.getVertexInt() + second.getVertexInt());
         leaf.setLeftLeaf(first);
         leaf.setRightLeaf(second);
         return leaf;
+    }
+
+    static BitSet codeText(HashMap<String, String> codeLetter, String text) {
+        StringBuilder codeText = new StringBuilder();
+        for (int i = 0; i < text.length(); i++) {
+            for (String keyLetter : codeLetter.keySet()) {
+                if (text.charAt(i) == keyLetter.charAt(0)) {
+                    codeText.append(codeLetter.get(keyLetter));
+                }
+            }
+        }
+
+        System.out.println(codeText);
+        return createByteArray(codeText.toString());
+    }
+
+    static BitSet createByteArray(String codeText) {
+        BitSet byteArray = new BitSet(codeText.length());
+        for (int i = 0; i < codeText.length(); i++) {
+            if (codeText.charAt(i) == '1') {
+                byteArray.set(i);
+            }
+        }
+        return byteArray;
     }
 }
